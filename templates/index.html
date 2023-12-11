@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weather App</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cabin&family=Libre+Baskerville&family=Open+Sans:wght@500&display=swap");
+      body {
+        font-family: "cabin", Courier, monospace;
+        background-image: url("https://get.wallhere.com/photo/monochrome-night-sky-rain-water-drops-glass-water-on-glass-weather-darkness-computer-wallpaper-226890.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        color: #2b6cb0;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      h2 {
+        font-size: 1.5rem;
+        text-align: center;
+        color: #2b6cb0;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      .weather-info h2 {
+        font-size: 1.5rem;
+        text-align: center;
+        color: rgb(78, 207, 240);
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      label {
+        color: rgb(99, 96, 96);
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+        width: 300px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #2b6cb0;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #1a4c80;
+      }
+
+      .weather-info {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .weather-info p {
+        margin: 10px 0;
+        color: #333;
+      }
+
+      .forecast-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .forecast-list li {
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .forecast-image {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Weather App</h1>
+
+      <form method="POST">
+        <label for="city">Enter city:</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          required
+          placeholder="Enter city..."
+        />
+        <button type="submit">Get Weather</button>
+      </form>
+
+      {% if weather_data %}
+      <div class="weather-info">
+        <h2>{{ weather_data['city'] }}</h2>
+        <p>Temperature: <strong>{{ weather_data['temperature'] }}°C</strong></p>
+        <p>Feels Like: <strong>{{ weather_data['feels_like'] }}°C</strong></p>
+        <p>
+          Min Temperature: <strong>{{ weather_data['temp_min'] }}°C</strong>
+        </p>
+        <p>
+          Max Temperature: <strong>{{ weather_data['temp_max'] }}°C</strong>
+        </p>
+      </div>
+      <br />
+      {% if forecast_data %}
+      <h2 align="center">7-Day Forecast</h2>
+      <br />
+      <ul class="forecast-list">
+        {% for forecast in forecast_data %}
+        <li>
+          <strong>{{ forecast['date'] }}</strong>: {{ forecast['temperature']
+          }}°C, {{ forecast['description'] }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% if graph_filename %}
+      <br />
+      <h2>7-Day Temperature Forecast Graph</h2>
+      <img
+        src="{{ url_for('static', filename=graph_filename) }}"
+        alt="7-Day Forecast Graph"
+        class="forecast-image"
+      />
+      {% endif %} {% endif %}
+    </div>
+  </body>
+</html>
